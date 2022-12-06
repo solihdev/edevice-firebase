@@ -7,15 +7,14 @@ class OrderModel {
   final String userId;
   final String orderStatus;
 
-  OrderModel({
-    required this.orderId,
-    required this.productId,
-    required this.count,
-    required this.totalPrice,
-    required this.createdAt,
-    required this.userId,
-    required this.orderStatus
-  });
+  OrderModel(
+      {required this.orderId,
+      required this.productId,
+      required this.count,
+      required this.totalPrice,
+      required this.createdAt,
+      required this.userId,
+      required this.orderStatus});
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
