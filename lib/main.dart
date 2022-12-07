@@ -3,12 +3,17 @@ import 'package:edevice/presentation/tab_box/tab_box.dart';
 import 'package:edevice/view_model/auth_view_model.dart';
 import 'package:edevice/view_model/tab_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'data/repositories/auth_repository.dart';
 
-void main() {
+void main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(
     MultiProvider(
       providers: [
@@ -45,12 +50,10 @@ class MainPage extends StatelessWidget {
       stream: Provider.of<AuthViewModel>(context).checkAuthState(),
       builder: (context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.hasData) {
-          User? user = snapshot.data;
-          return user == null ? AuthPage() : TabBox();
+          return TabBox();
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          print(snapshot.error);
+          return AuthPage();
         }
       },
     );
