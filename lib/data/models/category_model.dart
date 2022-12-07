@@ -1,9 +1,9 @@
 class CategoryModel {
-  final int categoryId;
-  final String categoryName;
-  final String description;
-  final String imageUrl;
-  final String createdAt;
+  String categoryId;
+  String categoryName;
+  String description;
+  String imageUrl;
+  String createdAt;
 
   CategoryModel({
     required this.categoryId,
@@ -13,13 +13,34 @@ class CategoryModel {
     required this.createdAt,
   });
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+  factory CategoryModel.fromJson(Map<String, dynamic> jsonData) {
     return CategoryModel(
-      categoryId: json['category_id'] as int? ?? 0,
-      categoryName: json['category_name'] as String? ?? "",
-      description: json['description'] as String? ?? "",
-      imageUrl: json['image_url'] as String? ?? "",
-      createdAt: json['created_at'] as String? ?? "",
+      categoryId: jsonData['categoryId'] as String? ?? "",
+      categoryName: jsonData['categoryName'] as String? ?? '',
+      description: jsonData['description'] as String? ?? '',
+      imageUrl: jsonData['imageUrl'] as String? ?? '',
+      createdAt: jsonData['createdAt'] as String? ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'categoryId': categoryId,
+      'categoryName': categoryName,
+      'description': description,
+      'imageUrl': imageUrl,
+      'createdAt': createdAt,
+    };
+  }
+
+  @override
+  String toString() {
+    return ''''
+       categoryId : $categoryId,
+       categoryName : $categoryName,
+       description : $description,
+       imageUrl : $imageUrl,
+       createdAt : $createdAt, 
+      ''';
   }
 }
