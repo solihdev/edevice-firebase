@@ -20,6 +20,5 @@ class AuthViewModel extends ChangeNotifier {
     required String email,
   }) =>
       _authRepository.signUp(password: password, email: email);
-
   Stream<User?> checkAuthState()=>_authRepository.authState();
 }

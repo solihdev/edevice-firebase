@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../utils/images.dart';
+import '../../admin/admin_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
@@ -15,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final formKey = GlobalKey<FormState>();
 
-  String accountName="${FirebaseAuth.instance.currentUser?.email.toString()}";
+  String accountName = "${FirebaseAuth.instance.currentUser?.email.toString()}";
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,18 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text("Profile Page",style: TextStyle(color: Colors.black,fontSize: 24),),),
+        title: Text(
+          "Profile Page",
+          style: TextStyle(color: Colors.black, fontSize: 24),
+        ),
+        actions: [IconButton(onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminScreen()));
+        }, icon: Icon(Icons.settings,color: Colors.black,))],
+      ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height ,
+          height: MediaQuery.of(context).size.height,
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -37,11 +45,14 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Form(
               key: formKey,
               child: Column(children: [
-                SizedBox(height: MediaQuery.of(context).size.height*0.05,),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
                 Container(
                   child: CircleAvatar(
                     radius: 100,
-                    backgroundImage: NetworkImage("https://i.pravatar.cc/300"),),
+                    backgroundImage: NetworkImage("https://i.pravatar.cc/300"),
+                  ),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.025,
@@ -61,7 +72,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 30),
-                  child: const Text('settings',),),
+                  child: const Text(
+                    'settings',
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 32, right: 10),
                 ),
@@ -71,7 +85,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 30),
-                    child: const Text('Account',)),
+                    child: const Text(
+                      'Account',
+                    )),
                 titleWidget(MyImages.ic_key, 'Change account password'),
                 titleWidget(MyImages.ic_camera, 'Change account Image'),
                 SizedBox(
@@ -93,6 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
   Widget titleWidget(icon, word) {
     return ListTile(
       leading: Padding(
@@ -121,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
           color: Colors.red,
         ),
       ),
-      title:  Text(
+      title: Text(
         'Log out',
         style: TextStyle(color: Colors.red, fontSize: 18),
       ),

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../../../data/models/category_model.dart';
 import '../../../view_model/categories_view_model.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -16,7 +15,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home"),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: const Text(
+          "Home Page",
+          style: TextStyle(color: Colors.black, fontSize: 24),
+        ),
       ),
       body: StreamBuilder<List<CategoryModel>>(
         stream: Provider.of<CategoriesViewModel>(context,listen: false).listenCategories(),
@@ -29,6 +34,7 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasData) {
             List<CategoryModel> categories = snapshot.data!;
             return ListView(
+              physics: BouncingScrollPhysics(),
               children: List.generate(
                   categories.length,
                       (index) => ListTile(

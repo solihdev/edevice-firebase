@@ -11,4 +11,13 @@ class CategoriesViewModel extends ChangeNotifier {
 
   Stream<List<CategoryModel>> listenCategories() =>
       categoryRepository.getCategories();
+
+  addCategory(CategoryModel categoryModel) =>
+      categoryRepository.addCategory(categoryModel: categoryModel);
+
+  updateCategory(CategoryModel categoryModel) =>
+      categoryRepository.updateCategory(categoryModel: categoryModel);
+
+  deleteCategory(String docId) =>
+      categoryRepository.deleteCategory(docId: docId);
 }
