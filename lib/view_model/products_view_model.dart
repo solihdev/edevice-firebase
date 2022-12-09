@@ -21,6 +21,8 @@ class ProductViewModel extends ChangeNotifier {
       ..onData((data) {});
   }
 
+
+
   addProduct(ProductModel productModel) =>
       productRepositroy.addProduct(productModel: productModel);
 

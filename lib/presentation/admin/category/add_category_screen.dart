@@ -18,7 +18,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           "Add Category",
           style: TextStyle(color: Colors.black, fontSize: 24),
         ),
@@ -30,7 +30,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                 CategoryModel categoryModel = CategoryModel(
                   categoryId: "",
                   categoryName: "Muzlatgichlar",
-                  description: "yaxshi",
+                  description: "Eng zo'rlari!",
                   imageUrl:
                       "https://freepngimg.com/thumb/refrigerator/5-2-refrigerator-png-picture-thumb.png",
                   createdAt: DateTime.now().toString(),
@@ -39,7 +39,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                   ..addCategory(categoryModel)
                   ..updateCategory(categoryModel);
               },
-              icon: Icon(Icons.add))
+              icon: const Icon(Icons.add))
         ],
       ),
     );

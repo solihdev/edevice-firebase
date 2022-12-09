@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edevice/data/models/category_model.dart';
-
 import '../../utils/my_utils.dart';
 
 class CategoryRepository {
@@ -14,7 +13,7 @@ class CategoryRepository {
       var newCategory =
       await _firestore.collection("categories").add(categoryModel.toJson());
       await _firestore.collection("categories").doc(newCategory.id).update({
-        "productId": newCategory.id,
+        "categoryId": newCategory.id,
       });
       MyUtils.getMyToast(message: "Kategoriya muvaffaqiyatli qo'shildi!");
     } on FirebaseException catch (eror) {
