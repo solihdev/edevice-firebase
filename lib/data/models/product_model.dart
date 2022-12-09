@@ -4,7 +4,6 @@ class ProductModel {
   List<String> productImages;
   String categoryId;
   String productId;
-  String shopId;
   String productName;
   String description;
   String createdAt;
@@ -16,7 +15,6 @@ class ProductModel {
     required this.productImages,
     required this.categoryId,
     required this.productId,
-    required this.shopId,
     required this.productName,
     required this.description,
     required this.createdAt,
@@ -30,7 +28,6 @@ class ProductModel {
       productImages: jsonData['productImages']  as List<String>? ?? [],
       categoryId: jsonData['categoryId'] as String? ?? '',
       productId: jsonData['productId'] as String? ?? '',
-      shopId: jsonData['shopId'] as String? ?? '',
       productName: jsonData['productName'] as String? ?? '',
       description: jsonData['description'] as String? ?? '',
       createdAt: jsonData['createdAt'] as String? ?? '',
@@ -45,7 +42,6 @@ class ProductModel {
       'productImages': productImages,
       'categoryId': categoryId,
       'productId': productId,
-      'shopId': shopId,
       'productName': productName,
       'description': description,
       'createdAt': createdAt,
@@ -61,7 +57,6 @@ class ProductModel {
       productImages: $productImages,
       categoryId: $categoryId,
       productId: $productId,
-      shopId: $shopId,
       productName: $productName,
       description: $description,
       createdAt: $createdAt,

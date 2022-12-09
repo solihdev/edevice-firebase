@@ -1,35 +1,36 @@
 import 'dart:async';
-import 'package:edevice/data/repositories/product_repository.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import '../data/models/product_model.dart';
+import '../data/repositories/product_repository.dart';
 
 class ProductViewModel extends ChangeNotifier {
-  final ProductRepository productRepositroy;
+  final ProductRepository productRepository;
 
-  ProductViewModel({required this.productRepositroy});
+  ProductViewModel({required this.productRepository}) {
+    listenProducts("");
+  }
 
   late StreamSubscription subscription;
 
   List<ProductModel> products = [];
 
-  listenProducts() async {
-    subscription = productRepositroy.getProducts().listen((allProducts) {
+  listenProducts(String categoryId) async {
+    subscription = productRepository
+        .getProducts(categoryId: categoryId)
+        .listen((allProducts) {
+      print("========================================${allProducts.length}");
       products = allProducts;
       notifyListeners();
-    })
-      ..onError((error) {})
-      ..onData((data) {});
+    });
   }
 
-
-
   addProduct(ProductModel productModel) =>
-      productRepositroy.addProduct(productModel: productModel);
+      productRepository.addProduct(productModel: productModel);
 
   updateProduct(ProductModel productModel) =>
-      productRepositroy.updateProduct(productModel: productModel);
+      productRepository.updateProduct(productModel: productModel);
 
-  deleteProduct(String docId) => productRepositroy.deleteProduct(docId: docId);
+  deleteProduct(String docId) => productRepository.deleteProduct(docId: docId);
 
   @override
   void dispose() {

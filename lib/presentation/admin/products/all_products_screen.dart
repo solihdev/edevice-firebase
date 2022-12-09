@@ -1,4 +1,4 @@
-import 'package:edevice/data/models/product_model.dart';
+import 'package:edevice/presentation/admin/products/update_product_screen.dart';
 import 'package:edevice/view_model/products_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,13 +24,42 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
         ),
       ),
       body: Consumer<ProductViewModel>(
-        builder: (context, productViewModel, child){
-          return ListView(
-            children: [
-              // List.generate(productViewModel.products.length, (index){})
-            ],
+          builder: (context, productViewModel, child) {
+        return ListView(
+            children: List.generate(productViewModel.products.length, (index) {
+          var product = productViewModel.products[index];
+          return ListTile(
+            title: Text(product.productName),
+            trailing: SizedBox(
+              width: 100,
+              child: Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdateProductScreen(
+                              productModel: product,
+                            ),
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.edit)),
+                  IconButton(
+                      onPressed: () {
+                        context
+                            .read<ProductViewModel>()
+                            .deleteProduct(product.productId);
+                        print("DELETING ID:${product.productId}");
+                      },
+                      icon: Icon(Icons.delete)),
+                ],
+              ),
+            ),
           );
-        }),
-      );
+        }));
+      }),
+    );
   }
 }

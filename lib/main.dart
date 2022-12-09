@@ -16,19 +16,22 @@ import 'data/repositories/product_repository.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  var firestore=FirebaseFirestore.instance;
+  var fireStore=FirebaseFirestore.instance;
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (context) => ProductViewModel(
-                productRepositroy: ProductRepository(
-                    firebaseFirestore: firestore))),
+          create: (context) => ProductViewModel(
+            productRepository: ProductRepository(
+              firebaseFirestore: fireStore,
+            ),
+          ),
+        ),
         ChangeNotifierProvider(
             create: (context) => CategoriesViewModel(
                 categoryRepository: CategoryRepository(
-                    firebaseFirestore: firestore))),
+                    firebaseFirestore: fireStore))),
         Provider(
             create: (context) => AuthViewModel(
                 authRepository: AuthRepository(
