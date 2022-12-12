@@ -22,6 +22,16 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
           "Products Admin",
           style: TextStyle(color: Colors.black, fontSize: 24),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AllProductsScreen()));
+              },
+              icon: Icon(Icons.add)),
+        ],
       ),
       body: Consumer<ProductViewModel>(
           builder: (context, productViewModel, child) {

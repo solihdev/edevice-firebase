@@ -39,76 +39,79 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextField(
-              controller: countController,
-              keyboardType: TextInputType.number,
-              decoration: getInputDecoration(label: "Count"),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: nameController,
-              keyboardType: TextInputType.text,
-              decoration: getInputDecoration(label: "Product Name"),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: descriptionController,
-              keyboardType: TextInputType.text,
-              maxLines: 20,
-              decoration: getInputDecoration(label: "Description"),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ExpansionTile(
-              title: Text(selectedCurrency.isEmpty
-                  ? "Select Currency"
-                  : selectedCurrency),
-              children: [
-                ...List.generate(
-                  currencies.length,
-                  (index) => ListTile(
-                    title: Text(currencies[index]),
-                    onTap: () {
-                      setState(() {
-                        selectedCurrency = currencies[index];
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                categoryModel == null
-                    ? "Select Category"
-                    : categoryModel!.categoryName,
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              TextField(
+                controller: countController,
+                keyboardType: TextInputType.number,
+                decoration: getInputDecoration(label: "Count"),
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                ProductModel productModel = ProductModel(
-                  count: int.parse(countController.text),
-                  price: int.parse(priceController.text),
-                  productImages: productImages,
-                  categoryId: categoryId,
-                  productId: "",
-                  productName: nameController.text,
-                  description: descriptionController.text,
-                  createdAt: createdAt,
-                  currency: selectedCurrency,
-                );
-              },
-              child: Text("Add Product to Fire Store"),
-            ),
-          ],
+              const SizedBox(
+                height: 20,
+              ),
+              TextField(
+                controller: nameController,
+                keyboardType: TextInputType.text,
+                decoration: getInputDecoration(label: "Product Name"),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextField(
+                controller: descriptionController,
+                keyboardType: TextInputType.text,
+                maxLines: 20,
+                decoration: getInputDecoration(label: "Description"),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ExpansionTile(
+                title: Text(selectedCurrency.isEmpty
+                    ? "Select Currency"
+                    : selectedCurrency),
+                children: [
+                  ...List.generate(
+                    currencies.length,
+                    (index) => ListTile(
+                      title: Text(currencies[index]),
+                      onTap: () {
+                        setState(() {
+                          selectedCurrency = currencies[index];
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  categoryModel == null
+                      ? "Select Category"
+                      : categoryModel!.categoryName,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  ProductModel productModel = ProductModel(
+                    count: int.parse(countController.text),
+                    price: int.parse(priceController.text),
+                    productImages: productImages,
+                    categoryId: categoryId,
+                    productId: "",
+                    productName: nameController.text,
+                    description: descriptionController.text,
+                    createdAt: createdAt,
+                    currency: selectedCurrency,
+                  );
+                },
+                child: Text("Add Product to Fire Store"),
+              ),
+            ],
+          ),
         ),
       ),
     );

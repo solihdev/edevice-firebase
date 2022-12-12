@@ -1,7 +1,7 @@
 class ProductModel {
   int count;
   int price;
-  List<String> productImages;
+  List<dynamic> productImages;
   String categoryId;
   String productId;
   String productName;
@@ -25,7 +25,7 @@ class ProductModel {
     return ProductModel(
       count: jsonData['count'] as int? ?? 0,
       price: jsonData['price'] as int? ?? 0,
-      productImages: jsonData['productImages']  as List<String>? ?? [],
+      productImages: jsonData['productImages']  as List<dynamic>? ?? [],
       categoryId: jsonData['categoryId'] as String? ?? '',
       productId: jsonData['productId'] as String? ?? '',
       productName: jsonData['productName'] as String? ?? '',
