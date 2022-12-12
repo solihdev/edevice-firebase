@@ -16,7 +16,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home"),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: const Text(
+          "Home Screen",
+          style: TextStyle(color: Colors.black, fontSize: 24),
+        ),
       ),
       body: Column(
         children: [
@@ -36,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                   return ListView(
                     children: [
                       ListTile(
-                        title: Text("All"),
+                        title: const Text("All"),
                         onTap: () {
                           Provider.of<ProductViewModel>(
                             context,

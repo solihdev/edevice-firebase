@@ -13,12 +13,14 @@ class ProductViewModel extends ChangeNotifier {
   late StreamSubscription subscription;
 
   List<ProductModel> products = [];
+  List<ProductModel> productsAdmin = [];
 
   listenProducts(String categoryId) async {
     subscription = productRepository
         .getProducts(categoryId: categoryId)
         .listen((allProducts) {
-      print("========================================${allProducts.length}");
+          if(categoryId.isEmpty) productsAdmin=allProducts;
+      print("ALL PRODUCTS LENGHT: ${allProducts.length}");
       products = allProducts;
       notifyListeners();
     });

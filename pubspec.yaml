@@ -40,7 +40,6 @@ dependencies:
   provider: ^6.0.4
   carousel_slider: ^4.1.1
   file_picker: ^5.0.1
-  image_picker: ^0.8.5+3
   email_validator: '^2.1.16'
   flutter_svg: ^1.1.1+1
   modal_bottom_sheet: ^2.0.1
@@ -48,6 +47,7 @@ dependencies:
   url_launcher: ^6.1.4
   flutter_linkify: ^5.0.2
   intl: ^0.17.0
+  image_picker: ^0.8.6
 
   #Firebase
   firebase_core: ^2.3.0

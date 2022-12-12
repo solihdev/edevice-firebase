@@ -1,6 +1,9 @@
 import 'package:edevice/data/models/category_model.dart';
+import 'package:edevice/utils/my_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import '../../../data/services/file_uploader.dart';
 import '../../../view_model/categories_view_model.dart';
 
 class AddCategoryScreen extends StatefulWidget {
@@ -11,6 +14,9 @@ class AddCategoryScreen extends StatefulWidget {
 }
 
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
+  final ImagePicker _picker = ImagePicker();
+  String imageUrl = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,21 +33,89 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
         children: [
           IconButton(
               onPressed: () {
+                if (imageUrl.isEmpty) {
+                  MyUtils.getMyToast(message: "Image tanla!!!");
+                  return;
+                }
                 CategoryModel categoryModel = CategoryModel(
                   categoryId: "",
-                  categoryName: "Muzlatgichlar",
-                  description: "Eng zo'rlari!",
-                  imageUrl:
-                      "https://freepngimg.com/thumb/refrigerator/5-2-refrigerator-png-picture-thumb.png",
+                  categoryName: "Televizor",
+                  description: "Yaxshi!",
+                  imageUrl: imageUrl,
                   createdAt: DateTime.now().toString(),
                 );
                 Provider.of<CategoriesViewModel>(context, listen: false)
                   ..addCategory(categoryModel)
                   ..updateCategory(categoryModel);
               },
-              icon: const Icon(Icons.add))
+              icon: const Icon(Icons.add)),
+          if (imageUrl.isNotEmpty)
+            Image.network(
+              imageUrl,
+              width: 200,
+              height: 200,
+            ),
+          IconButton(
+              onPressed: () {
+                _showPicker(context);
+              },
+              icon: const Icon(Icons.upload)),
         ],
       ),
     );
+  }
+
+  void _showPicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+              child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text("Gallery"),
+                onTap: () {
+                  _getFromGallery();
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt_outlined),
+                title: const Text("Gallery"),
+                onTap: () {
+                  _getFromCamera();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ));
+        });
+  }
+
+  _getFromGallery() async {
+    XFile? pickedFile = await _picker.pickImage(
+      maxWidth: 1920,
+      maxHeight: 2000,
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      if (!mounted) return;
+      imageUrl = await FileUploader.imageUploader(pickedFile);
+      setState(() {});
+    }
+  }
+
+  _getFromCamera() async {
+    XFile? pickedFile = await _picker.pickImage(
+      maxWidth: 1920,
+      maxHeight: 2000,
+      source: ImageSource.camera,
+    );
+    if (pickedFile != null) {
+      if (!mounted) return;
+      imageUrl = await FileUploader.imageUploader(pickedFile);
+      setState(() {});
+    }
   }
 }

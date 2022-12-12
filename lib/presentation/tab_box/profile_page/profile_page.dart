@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../../data/services/file_uploader.dart';
 import '../../../utils/images.dart';
 import '../../admin/admin_screen.dart';
 
@@ -18,6 +20,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   String accountName = "${FirebaseAuth.instance.currentUser?.email.toString()}";
 
+  final ImagePicker _picker = ImagePicker();
+  String imageUrl = '';
+  bool isLoading=false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,18 +32,28 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           "Profile Page",
           style: TextStyle(color: Colors.black, fontSize: 24),
         ),
-        actions: [IconButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminScreen()));
-        }, icon: Icon(Icons.settings,color: Colors.black,))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AdminScreen()));
+              },
+              icon: const Icon(
+                Icons.settings,
+                color: Colors.black,
+              ))
+        ],
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height * 1.1,
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -48,18 +64,26 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
+                isLoading?CircularProgressIndicator():SizedBox(),
                 Container(
-                  child: CircleAvatar(
-                    radius: 100,
-                    backgroundImage: NetworkImage("https://i.pravatar.cc/300"),
-                  ),
-                ),
+                    height: 200,
+                    width: 200,
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                    child: imageUrl.isEmpty
+                        ? Image.network(
+                            "https://i.pravatar.cc/300",
+                            fit: BoxFit.cover,
+                          )
+                        : Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,
+                          )),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.025,
                 ),
                 Text(
                   accountName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25,
                   ),
                 ),
@@ -69,15 +93,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
                 ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 30),
-                  child: const Text(
-                    'settings',
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 32, right: 10),
+                const Padding(
+                  padding: EdgeInsets.only(left: 32, right: 10),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
@@ -89,14 +106,19 @@ class _ProfilePageState extends State<ProfilePage> {
                       'Account',
                     )),
                 titleWidget(MyImages.ic_key, 'Change account password'),
-                titleWidget(MyImages.ic_camera, 'Change account Image'),
+                InkWell(
+                    onTap: () {
+                      _showPicker(context);
+                    },
+                    child: titleWidget(
+                        MyImages.ic_camera, 'Change account Image')),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
                 ),
                 Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 30),
-                    child: const Text('Uptodo', style: TextStyle())),
+                    child: const Text('e-Device', style: TextStyle())),
                 titleWidget(MyImages.ic_about, 'About US'),
                 titleWidget(MyImages.ic_faq, 'FAQ'),
                 titleWidget(MyImages.ic_help_feedback, 'Help & Feedback'),
@@ -109,6 +131,69 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
+
+
+  void _showPicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+              child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text("Gallery"),
+                onTap: () {
+                  _getFromGallery();
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt_outlined),
+                title: const Text("Gallery"),
+                onTap: () {
+                  _getFromCamera();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ));
+        });
+  }
+
+  _getFromGallery() async {
+    XFile? pickedFile = await _picker.pickImage(
+      maxWidth: 1920,
+      maxHeight: 2000,
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      if (!mounted) return;
+      setState((){
+        isLoading=false;
+      });
+      imageUrl= await FileUploader.imageUploader(pickedFile);
+      setState(() {
+        isLoading=false;
+      });
+    }
+  }
+
+  _getFromCamera() async {
+    XFile? pickedFile = await _picker.pickImage(
+      maxWidth: 1920,
+      maxHeight: 2000,
+      source: ImageSource.camera,
+    );
+    if (pickedFile != null) {
+      if (!mounted) return;
+      imageUrl= await FileUploader.imageUploader(pickedFile);
+      // Provider.of<CategoriesViewModel>(context).toString();
+      setState(() {});
+    }
+  }
+
 
   Widget titleWidget(icon, word) {
     return ListTile(
@@ -124,7 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
         word,
         style: const TextStyle(fontSize: 18),
       ),
-      trailing: Icon(Icons.chevron_right),
+      trailing: const Icon(Icons.chevron_right),
     );
   }
 
@@ -138,7 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
           color: Colors.red,
         ),
       ),
-      title: Text(
+      title: const Text(
         'Log out',
         style: TextStyle(color: Colors.red, fontSize: 18),
       ),

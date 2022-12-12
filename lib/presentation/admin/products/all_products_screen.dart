@@ -36,8 +36,8 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
       body: Consumer<ProductViewModel>(
           builder: (context, productViewModel, child) {
         return ListView(
-            children: List.generate(productViewModel.products.length, (index) {
-          var product = productViewModel.products[index];
+            children: List.generate(productViewModel.productsAdmin.length, (index) {
+          var product = productViewModel.productsAdmin[index];
           return ListTile(
             title: Text(product.productName),
             trailing: SizedBox(
