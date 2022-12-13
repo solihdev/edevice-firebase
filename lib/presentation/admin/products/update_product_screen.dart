@@ -88,7 +88,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                 const SizedBox(height: 20),
                 ExpansionTile(
                   title: Text(selectedCurrency.isEmpty
-                      ? "Select  Currncy"
+                      ? "Select  Currency"
                       : selectedCurrency),
                   children: [
                     ...List.generate(
@@ -131,11 +131,9 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                       createdAt: widget.productModel.createdAt,
                       currency: selectedCurrency,
                     );
-
                     Provider.of<ProductViewModel>(context,listen: false).updateProduct(productModel);
-
                   },
-                  child: Text("Update Product to Fire Store"),
+                  child: const Text("Update Product to Fire Store"),
                 )
               ],
             ),
@@ -148,7 +146,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
         context: context,
         builder: (context) {
           return Dialog(
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.6,
               width: double.infinity,
               child: StreamBuilder<List<CategoryModel>>(

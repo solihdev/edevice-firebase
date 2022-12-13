@@ -28,7 +28,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
               onPressed: () {
                 CategoryModel categoryModel = CategoryModel(
                   categoryId: "",
-                  categoryName: "Muzlatgichlar",
+                  categoryName: "Televizorlar",
                   description: "yaxshi",
                   imageUrl:
                   "https://freepngimg.com/thumb/refrigerator/5-2-refrigerator-png-picture-thumb.png",

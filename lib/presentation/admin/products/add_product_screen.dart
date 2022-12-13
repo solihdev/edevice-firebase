@@ -1,21 +1,33 @@
 import 'package:edevice/data/models/category_model.dart';
 import 'package:edevice/data/models/product_model.dart';
 import 'package:edevice/utils/my_utils.dart';
+import 'package:edevice/view_model/categories_view_model.dart';
+import 'package:edevice/view_model/products_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AllProductsScreen extends StatefulWidget {
-  const AllProductsScreen({Key? key}) : super(key: key);
+class AddProductScreen extends StatefulWidget {
+  const AddProductScreen({Key? key}) : super(key: key);
 
   @override
-  State<AllProductsScreen> createState() => _AllProductsScreenState();
+  State<AddProductScreen> createState() => _AddProductScreenState();
 }
 
-class _AllProductsScreenState extends State<AllProductsScreen> {
+class _AddProductScreenState extends State<AddProductScreen> {
+  // required this.count, textField
+  // required this.price,  textField
+  // required this.productImages,select
+  // required this.categoryId,
+  // required this.productId,
+  // required this.productName, textField
+  // required this.description, textField
+  // required this.createdAt, select
+  // required this.currency,  select
+
   final TextEditingController countController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-
   List<String> productImages = [
     "https://www.pngitem.com/pimgs/m/183-1831803_laptop-collection-png-transparent-png.png",
     "https://www.pngitem.com/pimgs/m/183-1831803_laptop-collection-png-transparent-png.png",
@@ -30,17 +42,11 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          "Add Product Screen",
-          style: TextStyle(color: Colors.black, fontSize: 24),
-        ),
+        title: const Text("Add Product screen"),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: SingleChildScrollView(
           child: Column(
             children: [
               TextField(
@@ -48,46 +54,54 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                 keyboardType: TextInputType.number,
                 decoration: getInputDecoration(label: "Count"),
               ),
-              const SizedBox(
-                height: 20,
+              const SizedBox(height: 20),
+              TextField(
+                controller: priceController,
+                keyboardType: TextInputType.number,
+                decoration: getInputDecoration(label: "Price"),
               ),
+              const SizedBox(height: 20),
               TextField(
                 controller: nameController,
                 keyboardType: TextInputType.text,
                 decoration: getInputDecoration(label: "Product Name"),
               ),
-              const SizedBox(
-                height: 20,
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 200,
+                child: TextField(
+                  controller: descriptionController,
+                  keyboardType: TextInputType.text,
+                  maxLines: 20,
+                  decoration: getInputDecoration(label: "Description"),
+                ),
               ),
-              TextField(
-                controller: descriptionController,
-                keyboardType: TextInputType.text,
-                maxLines: 20,
-                decoration: getInputDecoration(label: "Description"),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               ExpansionTile(
                 title: Text(selectedCurrency.isEmpty
-                    ? "Select Currency"
+                    ? "Select  Currncy"
                     : selectedCurrency),
                 children: [
                   ...List.generate(
-                    currencies.length,
-                    (index) => ListTile(
-                      title: Text(currencies[index]),
-                      onTap: () {
-                        setState(() {
-                          selectedCurrency = currencies[index];
-                        });
-                      },
-                    ),
-                  ),
+                      currencies.length,
+                          (index) => ListTile(
+                        title: Text(currencies[index]),
+                        onTap: () {
+                          setState(() {
+                            selectedCurrency = currencies[index];
+                          });
+                        },
+                      ))
                 ],
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  selectCategory((selectedCategory) {
+                    categoryModel = selectedCategory;
+                    categoryId = categoryModel!.categoryId;
+                    setState(() {});
+                  });
+                },
                 child: Text(
                   categoryModel == null
                       ? "Select Category"
@@ -107,6 +121,8 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                     createdAt: createdAt,
                     currency: selectedCurrency,
                   );
+
+                  Provider.of<ProductViewModel>(context,listen: false).addProduct(productModel);
                 },
                 child: Text("Add Product to Fire Store"),
               ),
@@ -115,5 +131,48 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
         ),
       ),
     );
+  }
+
+  selectCategory(ValueChanged<CategoryModel> onCategorySelect) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.6,
+              width: double.infinity,
+              child: StreamBuilder<List<CategoryModel>>(
+                stream: Provider.of<CategoriesViewModel>(context, listen: false)
+                    .listenCategories(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    List<CategoryModel> categories = snapshot.data!;
+                    return ListView(
+                      children: List.generate(
+                        categories.length,
+                            (index) => ListTile(
+                          title: Text(categories[index].categoryName),
+                          onTap: () {
+                            onCategorySelect.call(categories[index]);
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
+                    );
+                  }
+                },
+              ),
+            ),
+          );
+        });
   }
 }
