@@ -7,6 +7,10 @@ class MyImages {
   static const im_routine = "assets/images/im_routine.png";
   static const im_organazed_task = "assets/images/im_orginazed_task.png";
 
+  static const splash_image="assets/images/splash_image.png";
+  static const watch_image="assets/images/watch.png";
+  static const watch_image2="assets/images/watch2.png";
+  static const iphat_image="assets/images/iphat.png";
 
   //icons
   static const ic_menu = "assets/icons/ic_menu.svg";
@@ -48,4 +52,18 @@ class MyImages {
   static const ic_help_feedback='assets/icons/ic_help_feedback.svg';
   static const ic_like='assets/icons/ic_like.svg';
   static const ic_log_out='assets/icons/ic_log_out.svg';
+
+  static const circle_icon="assets/icons/circle.svg";
+  static const moon_icon="assets/icons/moon.svg";
+  static const email_icon="assets/icons/email.svg";
+  static const password_icon="assets/icons/password.svg";
+  static const more_icon="assets/icons/more.svg";
+  static const search_icon="assets/icons/search.svg";
+  static const home_icon="assets/icons/home.svg";
+  static const favorite_icon="assets/icons/favorite.svg";
+  static const profile_icon="assets/icons/profile.svg";
+  static const buy_icon="assets/icons/buy.svg";
+  static const next_icon="assets/icons/next.svg";
+  static const watch_icon="assets/icons/watch.svg";
+  static const back_icon="assets/icons/back.svg";
 }

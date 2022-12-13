@@ -8,6 +8,10 @@ class MyColors {
   static const Color black = Colors.black;
   static const Color textColor = Color(0xFF3E434D);
   static const Color C_F2F2F2 = Color(0xFFF2F2F2);
+  static const Color C_5956E9=Color(0xFF5956E9);
+  static const Color C_868686=Color(0xFF868686);
+  static const Color C_8381E8=Color(0xFF8381E8);
+  static const Color C_F7F7F7=Color(0xFFF7F7F7);
 }
 
 class Palette {
