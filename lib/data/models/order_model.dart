@@ -6,6 +6,7 @@ class OrderModel {
   String userId;
   String orderStatus;
   String createdAt;
+  String productName;
 
   OrderModel({
     required this.count,
@@ -15,6 +16,7 @@ class OrderModel {
     required this.userId,
     required this.orderStatus,
     required this.createdAt,
+    required this.productName,
   });
 
   OrderModel copyWith({
@@ -25,6 +27,7 @@ class OrderModel {
     String? userId,
     String? orderStatus,
     String? createdAt,
+    String? productName,
   }) =>
       OrderModel(
         count: count ?? this.count,
@@ -34,6 +37,7 @@ class OrderModel {
         userId: userId ?? this.userId,
         orderStatus: orderStatus ?? this.orderStatus,
         createdAt: createdAt ?? this.createdAt,
+        productName: productName ?? this.productName,
       );
 
   factory OrderModel.fromJson(Map<String, dynamic> jsonData) {
@@ -45,6 +49,7 @@ class OrderModel {
       userId: jsonData['userId'] as String? ?? '',
       orderStatus: jsonData['orderStatus'] as String? ?? '',
       createdAt: jsonData['createdAt'] as String? ?? '',
+      productName: jsonData['productName'] as String? ?? '',
     );
   }
 
@@ -70,6 +75,7 @@ class OrderModel {
       userId: $userId,
       orderStatus: $orderStatus,
       createdAt: $createdAt,
+      productName: $productName,
       ''';
   }
 }

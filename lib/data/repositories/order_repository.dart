@@ -51,4 +51,13 @@ class OrdersRepository {
             .map((doc) => OrderModel.fromJson(doc.data()))
             .toList(),
       );
+  Stream<List<OrderModel>> getOrdersByUserId({required String userId}) =>
+      _firestore.collection("orders")
+          .where("userId",isEqualTo: userId)
+          .snapshots()
+          .map(
+            (event) => event.docs
+            .map((doc) => OrderModel.fromJson(doc.data()))
+            .toList(),
+      );
 }

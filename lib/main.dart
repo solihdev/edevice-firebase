@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edevice/data/repositories/order_repository.dart';
 import 'package:edevice/presentation/auth/auth_page.dart';
 import 'package:edevice/presentation/tab_box/tab_box.dart';
 import 'package:edevice/view_model/auth_view_model.dart';
 import 'package:edevice/view_model/categories_view_model.dart';
+import 'package:edevice/view_model/orders_view_model.dart';
 import 'package:edevice/view_model/products_view_model.dart';
 import 'package:edevice/view_model/tab_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +19,7 @@ import 'presentation/tab_box/home_page_mode/home_mode.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  var fireStore=FirebaseFirestore.instance;
+  var fireStore = FirebaseFirestore.instance;
 
   runApp(
     MultiProvider(
@@ -31,11 +33,15 @@ void main() async {
         ),
         ChangeNotifierProvider(
             create: (context) => CategoriesViewModel(
-                categoryRepository: CategoryRepository(
-                    firebaseFirestore: fireStore))),
+                categoryRepository:
+                    CategoryRepository(firebaseFirestore: fireStore))),
+        ChangeNotifierProvider(
+            create: (context) => OrderViewModel(
+                ordersRepository:
+                    OrdersRepository(firebaseFirestore: fireStore))),
         Provider(
             create: (context) => AuthViewModel(
-                authRepository: AuthRepository(
+                    authRepository: AuthRepository(
                   firebaseAuth: FirebaseAuth.instance,
                 ))),
         ChangeNotifierProvider(create: (context) => TabViewModel()),

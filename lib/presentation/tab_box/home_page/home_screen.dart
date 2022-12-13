@@ -1,3 +1,4 @@
+import 'package:edevice/presentation/tab_box/home_page/info_page.dart';
 import 'package:edevice/view_model/categories_view_model.dart';
 import 'package:edevice/view_model/products_view_model.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       ...List.generate(
                         categories.length,
-                            (index) => ListTile(
+                        (index) => ListTile(
                           title: Text(categories[index].categoryName),
                           onTap: () {
                             Provider.of<ProductViewModel>(
@@ -76,11 +77,14 @@ class _HomePageState extends State<HomePage> {
             builder: (context, productViewModel, child) {
               return ListView(
                 children:
-                List.generate(productViewModel.products.length, (index) {
+                    List.generate(productViewModel.products.length, (index) {
                   var product = productViewModel.products[index];
                   return ListTile(
                     title: Text(product.productName),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => InfoPage()));
+                    },
                   );
                 }),
               );
