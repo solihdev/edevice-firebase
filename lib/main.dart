@@ -11,16 +11,17 @@ import 'package:edevice/view_model/profile_view_model.dart';
 import 'package:edevice/view_model/tab_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'data/repositories/auth_repository.dart';
 import 'data/repositories/categories_repository.dart';
 import 'data/repositories/product_repository.dart';
-import 'presentation/tab_box/home_page_mode/home_mode.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseMessaging.instance.subscribeToTopic("users");
   var fireStore = FirebaseFirestore.instance;
 
   runApp(
@@ -66,7 +67,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MenuPage(),
+      home: MainPage(),
     );
   }
 }
