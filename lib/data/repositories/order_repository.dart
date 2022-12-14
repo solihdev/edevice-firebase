@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:edevice/data/models/category_model.dart';
-import 'package:edevice/data/models/order_model.dart';
 import '../../utils/my_utils.dart';
+import '../models/order_model.dart';
 
 class OrdersRepository {
   final FirebaseFirestore _firestore;
@@ -16,18 +15,19 @@ class OrdersRepository {
       await _firestore.collection("orders").doc(newOrder.id).update({
         "orderId": newOrder.id,
       });
+
       MyUtils.getMyToast(message: "Buyurtma muvaffaqiyatli qo'shildi!");
-    } on FirebaseException catch (eror) {
-      MyUtils.getMyToast(message: eror.message.toString());
+    } on FirebaseException catch (er) {
+      MyUtils.getMyToast(message: er.message.toString());
     }
   }
 
-  Future<void> deleteOrder({required String docId}) async {
+  Future<void> deleteOrderById({required String docId}) async {
     try {
       await _firestore.collection("orders").doc(docId).delete();
       MyUtils.getMyToast(message: "Order muvaffaqiyatli o'chirildi!");
-    } on FirebaseException catch (error) {
-      MyUtils.getMyToast(message: error.message.toString());
+    } on FirebaseException catch (er) {
+      MyUtils.getMyToast(message: er.message.toString());
     }
   }
 
@@ -36,28 +36,35 @@ class OrdersRepository {
       await _firestore
           .collection("orders")
           .doc(orderModel.orderId)
-          .update(
-        orderModel.toJson(),
-      );
+          .update(orderModel.toJson());
+
       MyUtils.getMyToast(message: "Buyurtma muvaffaqiyatli yangilandi!");
-    } on FirebaseException catch (error) {
-      MyUtils.getMyToast(message: error.message.toString());
+    } on FirebaseException catch (er) {
+      MyUtils.getMyToast(message: er.message.toString());
     }
   }
 
   Stream<List<OrderModel>> getOrders() =>
       _firestore.collection("orders").snapshots().map(
-            (event) => event.docs
+            (event1) => event1.docs
             .map((doc) => OrderModel.fromJson(doc.data()))
             .toList(),
       );
+
   Stream<List<OrderModel>> getOrdersByUserId({required String userId}) =>
-      _firestore.collection("orders")
-          .where("userId",isEqualTo: userId)
+      _firestore
+          .collection("orders")
+          .where("userId", isEqualTo: userId)
           .snapshots()
           .map(
-            (event) => event.docs
+            (event1) => event1.docs
             .map((doc) => OrderModel.fromJson(doc.data()))
             .toList(),
       );
+
+  Future<OrderModel> getSingleOrderById({required String docId}) async {
+    var data = await _firestore.collection("orders").doc(docId).get();
+
+    return OrderModel.fromJson(data.data() as Map<String, dynamic>);
+  }
 }

@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edevice/data/repositories/order_repository.dart';
+import 'package:edevice/data/repositories/profile_repository.dart';
 import 'package:edevice/presentation/auth/auth_page.dart';
 import 'package:edevice/presentation/tab_box/tab_box.dart';
 import 'package:edevice/view_model/auth_view_model.dart';
 import 'package:edevice/view_model/categories_view_model.dart';
 import 'package:edevice/view_model/orders_view_model.dart';
 import 'package:edevice/view_model/products_view_model.dart';
+import 'package:edevice/view_model/profile_view_model.dart';
 import 'package:edevice/view_model/tab_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,7 +38,7 @@ void main() async {
                 categoryRepository:
                     CategoryRepository(firebaseFirestore: fireStore))),
         ChangeNotifierProvider(
-            create: (context) => OrderViewModel(
+            create: (context) => OrdersViewModel(
                 ordersRepository:
                     OrdersRepository(firebaseFirestore: fireStore))),
         Provider(
@@ -45,8 +47,14 @@ void main() async {
                   firebaseAuth: FirebaseAuth.instance,
                 ))),
         ChangeNotifierProvider(create: (context) => TabViewModel()),
+        ChangeNotifierProvider(
+          create: (context) => ProfileViewModel(
+              firebaseAuth: FirebaseAuth.instance,
+              profileRepository: ProfileRepository(firebaseFirestore: fireStore)
+          ),
+        )
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -58,7 +66,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
+      home: MenuPage(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:edevice/data/models/category_model.dart';
+import 'package:edevice/presentation/tab_box/profile_page/profile_page.dart';
 import 'package:edevice/utils/color.dart';
 import 'package:edevice/utils/images.dart';
 import 'package:edevice/utils/style.dart';
@@ -17,7 +18,6 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-
   int currentPageIndex = 0;
 
   @override
@@ -33,7 +33,14 @@ class _MenuPageState extends State<MenuPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 40, left: 50),
-                    child: SvgPicture.asset(MyImages.more_icon),
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ProfilePage()));
+                        },
+                        child: SvgPicture.asset(MyImages.more_icon)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 30, left: 30),
@@ -81,9 +88,9 @@ class _MenuPageState extends State<MenuPage> {
               SizedBox(
                 height: 200,
                 child: StreamBuilder<List<CategoryModel>>(
-                  stream: Provider.of<CategoriesViewModel>(
-                      context, listen: false)
-                      .listenCategories(),
+                  stream:
+                      Provider.of<CategoriesViewModel>(context, listen: false)
+                          .listenCategories(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -94,11 +101,11 @@ class _MenuPageState extends State<MenuPage> {
                       List<CategoryModel> categories = snapshot.data!;
                       return DefaultTabController(
                         initialIndex: 0,
-                        length: categories.length, child: Column(
-                        children: [
-
-                        ],
-                      ),);
+                        length: categories.length,
+                        child: Column(
+                          children: [],
+                        ),
+                      );
                     } else {
                       return Center(
                         child: Text(snapshot.error.toString()),

@@ -82,8 +82,12 @@ class _HomePageState extends State<HomePage> {
                   return ListTile(
                     title: Text(product.productName),
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => InfoPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => InfoPage(
+                                    productModel: product,
+                                  )));
                     },
                   );
                 }),

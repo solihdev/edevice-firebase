@@ -1,10 +1,11 @@
+import 'package:edevice/view_model/profile_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../../../data/services/file_uploader.dart';
 import '../../../utils/images.dart';
-import '../../admin/admin_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
@@ -22,117 +23,123 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final ImagePicker _picker = ImagePicker();
   String imageUrl = '';
-  bool isLoading=false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          "Profile Page",
-          style: TextStyle(color: Colors.black, fontSize: 24),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AdminScreen()));
-              },
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.black,
-              ))
-        ],
-      ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 1.1,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.white,
-            child: Form(
-              key: formKey,
-              child: Column(children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                ),
-                isLoading?CircularProgressIndicator():SizedBox(),
-                Container(
-                    height: 200,
-                    width: 200,
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
-                    child: imageUrl.isEmpty
-                        ? Image.network(
-                            "https://i.pravatar.cc/300",
-                            fit: BoxFit.cover,
-                          )
-                        : Image.network(
-                            imageUrl,
-                            fit: BoxFit.cover,
-                          )),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.025,
-                ),
-                Text(
-                  accountName,
-                  style: const TextStyle(
-                    fontSize: 25,
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 32, right: 10),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
-                Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 30),
-                    child: const Text(
-                      'Account',
-                    )),
-                titleWidget(MyImages.ic_key, 'Change account password'),
-                InkWell(
-                    onTap: () {
-                      _showPicker(context);
-                    },
-                    child: titleWidget(
-                        MyImages.ic_camera, 'Change account Image')),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
-                Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 30),
-                    child: const Text('e-Device', style: TextStyle())),
-                titleWidget(MyImages.ic_about, 'About US'),
-                titleWidget(MyImages.ic_faq, 'FAQ'),
-                titleWidget(MyImages.ic_help_feedback, 'Help & Feedback'),
-                titleWidget(MyImages.ic_like, 'Support US'),
-                logoutWidget(),
-              ]),
-            ),
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: const Text(
+            "Profile Page",
+            style: TextStyle(color: Colors.black, fontSize: 24),
           ),
         ),
-      ),
-    );
+        body: Consumer<ProfileViewModel>(
+          builder: (context, profileViewModel, child) {
+            return profileViewModel.user != null
+                ? SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child:  SizedBox(
+                  height: MediaQuery.of(context).size.height * 1.1,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.white,
+                    child: Form(
+                      key: formKey,
+                      child: Column(children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                        ),
+                        isLoading ? const CircularProgressIndicator() : const SizedBox(),
+                        Container(
+                            height: 200,
+                            width: 200,
+                            decoration: const BoxDecoration(shape: BoxShape.circle),
+                            child: imageUrl.isEmpty
+                                ? Image.network(
+                              "https://i.pravatar.cc/300",
+                              fit: BoxFit.cover,
+                            )
+                                : Image.network(
+                              imageUrl,
+                              fit: BoxFit.cover,
+                            )),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.025,
+                        ),
+                        Text(
+                          accountName,
+                          style: const TextStyle(
+                            fontSize: 25,
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03,
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 32, right: 10),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03,
+                        ),
+                        Container(
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.only(left: 30),
+                            child: const Text(
+                              'Account',
+                            )),
+                        titleWidget(MyImages.ic_key, 'Change account password'),
+                        InkWell(
+                            onTap: () {
+                              _showPicker(context);
+                            },
+                            child:
+                            titleWidget(MyImages.ic_camera, 'Change account Image')),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03,
+                        ),
+                        Container(
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.only(left: 30),
+                            child: const Text('e-Device', style: TextStyle())),
+                        titleWidget(MyImages.ic_about, 'About US'),
+                        titleWidget(MyImages.ic_faq, 'FAQ'),
+                        titleWidget(MyImages.ic_help_feedback, 'Help & Feedback'),
+                        titleWidget(MyImages.ic_like, 'Support US'),
+                        InkWell(
+                          onTap: (){
+                            FirebaseAuth.instance.signOut();
+                          },
+                          child: ListTile(
+                            leading: Padding(
+                              padding: const EdgeInsets.only(left: 14),
+                              child: SvgPicture.asset(
+                                MyImages.ic_log_out,
+                                width: 26,
+                                color: Colors.red,
+                              ),
+                            ),
+                            title: const Text(
+                              'Log out',
+                              style: TextStyle(color: Colors.red, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ]),
+                    ),
+                  ),
+                )):const Center(child: CircularProgressIndicator());
+          },
+        ));
   }
-
-
 
   void _showPicker(BuildContext context) {
     showModalBottomSheet(
@@ -170,12 +177,12 @@ class _ProfilePageState extends State<ProfilePage> {
     );
     if (pickedFile != null) {
       if (!mounted) return;
-      setState((){
-        isLoading=false;
-      });
-      imageUrl= await FileUploader.imageUploader(pickedFile);
       setState(() {
-        isLoading=false;
+        isLoading = false;
+      });
+      imageUrl = await FileUploader.imageUploader(pickedFile);
+      setState(() {
+        isLoading = false;
       });
     }
   }
@@ -188,12 +195,11 @@ class _ProfilePageState extends State<ProfilePage> {
     );
     if (pickedFile != null) {
       if (!mounted) return;
-      imageUrl= await FileUploader.imageUploader(pickedFile);
+      imageUrl = await FileUploader.imageUploader(pickedFile);
       // Provider.of<CategoriesViewModel>(context).toString();
       setState(() {});
     }
   }
-
 
   Widget titleWidget(icon, word) {
     return ListTile(
@@ -210,23 +216,6 @@ class _ProfilePageState extends State<ProfilePage> {
         style: const TextStyle(fontSize: 18),
       ),
       trailing: const Icon(Icons.chevron_right),
-    );
-  }
-
-  Widget logoutWidget() {
-    return ListTile(
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 14),
-        child: SvgPicture.asset(
-          MyImages.ic_log_out,
-          width: 26,
-          color: Colors.red,
-        ),
-      ),
-      title: const Text(
-        'Log out',
-        style: TextStyle(color: Colors.red, fontSize: 18),
-      ),
     );
   }
 }

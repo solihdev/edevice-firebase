@@ -4,40 +4,58 @@ import 'package:edevice/data/repositories/order_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class OrderViewModel extends ChangeNotifier {
-
+class OrdersViewModel extends ChangeNotifier {
   final OrdersRepository ordersRepository;
 
-  OrderViewModel({required this.ordersRepository}) {
+  OrdersViewModel({required this.ordersRepository}) {
     listenOrders(FirebaseAuth.instance.currentUser!.uid);
   }
 
   late StreamSubscription subscription;
 
+  OrderModel? orderModelForInfo;
+
   List<OrderModel> userOrders = [];
 
   listenOrders(String userId) async {
-    subscription = ordersRepository
-        .getOrdersByUserId(userId: userId)
-        .listen((orders) {
-      userOrders = orders;
-      notifyListeners();
-    });
+    subscription =
+        ordersRepository.getOrdersByUserId(userId: userId).listen((orders) {
+          userOrders = orders;
+          notifyListeners();
+        });
   }
 
   addOrder(OrderModel orderModel) =>
       ordersRepository.addOrder(orderModel: orderModel);
 
-  addOrderInExsist({required String productId,required int count}){
-    OrderModel orderModel=userOrders.firstWhere((element) => element.orderId==productId);
-    int currentCount=orderModel.count;
-    ordersRepository.updateOrder(orderModel: orderModel.copyWith(count: currentCount+count));
+  updateOrderIfExists({
+    required String productId,
+    required int count,
+  }) {
+    OrderModel orderModel =
+    userOrders.firstWhere((element) => element.productId == productId);
+
+    int currentCount = orderModel.count;
+
+    int price = orderModel.totalPrice ~/ orderModel.count;
+
+    ordersRepository.updateOrder(
+      orderModel: orderModel.copyWith(
+        count: currentCount + count,
+        totalPrice: price * (currentCount + count),
+      ),
+    );
   }
 
   updateOrder(OrderModel orderModel) =>
       ordersRepository.updateOrder(orderModel: orderModel);
 
-  deleteOrder(String docId) => ordersRepository.deleteOrder(docId: docId);
+  getSingleOrder(String docId) async {
+    orderModelForInfo = await ordersRepository.getSingleOrderById(docId: docId);
+    notifyListeners();
+  }
+
+  deleteOrder(String docId) => ordersRepository.deleteOrderById(docId: docId);
 
   @override
   void dispose() {
