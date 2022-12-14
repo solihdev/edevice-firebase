@@ -1,3 +1,4 @@
+import 'package:edevice/data/models/order_model.dart';
 import 'package:edevice/presentation/tab_box/card_page/card_info.dart';
 import 'package:edevice/view_model/orders_view_model.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +32,9 @@ class _CardPageState extends State<CardPage> {
               return ListTile(
                 title: Text(order.productName,style: const TextStyle(color: Colors.black),),
                 onTap: () {
-                  orderViewModel.getSingleOrder(order.orderId);
+                  orderViewModel.getSingleProduct(order.orderId);
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (builder) => const CardInfo()));
+                      MaterialPageRoute(builder: (builder) =>  CardInfo(orderModel: order,)));
                 },
                 trailing: Text("Count:${order.count}"),
               );

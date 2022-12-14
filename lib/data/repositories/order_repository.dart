@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edevice/data/models/product_model.dart';
 import '../../utils/my_utils.dart';
 import '../models/order_model.dart';
 
@@ -62,9 +63,8 @@ class OrdersRepository {
             .toList(),
       );
 
-  Future<OrderModel> getSingleOrderById({required String docId}) async {
-    var data = await _firestore.collection("orders").doc(docId).get();
-
-    return OrderModel.fromJson(data.data() as Map<String, dynamic>);
+  Future<ProductModel> getSingleProductById({required String docId}) async {
+    var data = await _firestore.collection("products").doc(docId).get();
+    return ProductModel.fromJson(data.data() as Map<String, dynamic>);
   }
 }

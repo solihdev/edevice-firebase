@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:edevice/data/models/order_model.dart';
+import 'package:edevice/data/models/product_model.dart';
 import 'package:edevice/data/repositories/order_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class OrdersViewModel extends ChangeNotifier {
 
   late StreamSubscription subscription;
 
-  OrderModel? orderModelForInfo;
+  ProductModel? productModel;
 
   List<OrderModel> userOrders = [];
 
@@ -50,8 +51,8 @@ class OrdersViewModel extends ChangeNotifier {
   updateOrder(OrderModel orderModel) =>
       ordersRepository.updateOrder(orderModel: orderModel);
 
-  getSingleOrder(String docId) async {
-    orderModelForInfo = await ordersRepository.getSingleOrderById(docId: docId);
+  getSingleProduct(String docId) async {
+    productModel = await ordersRepository.getSingleProductById(docId: docId);
     notifyListeners();
   }
 
