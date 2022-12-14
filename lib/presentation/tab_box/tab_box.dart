@@ -1,5 +1,6 @@
 import 'package:edevice/presentation/tab_box/card_page/card_screen.dart';
 import 'package:edevice/presentation/tab_box/home_page/home_screen.dart';
+import 'package:edevice/presentation/tab_box/home_page_mode/home_mode.dart';
 import 'package:edevice/presentation/tab_box/profile_page/profile_page.dart';
 import 'package:edevice/utils/images.dart';
 import 'package:edevice/view_model/tab_view_model.dart';
@@ -19,10 +20,8 @@ class _TabBoxState extends State<TabBox> {
 
   @override
   void initState() {
-    _screens.add(const HomePage());
+    _screens.add(const MenuPage());
     _screens.add(const CardPage());
-    _screens.add(const ProfilePage());
-
     super.initState();
   }
 
@@ -33,14 +32,13 @@ class _TabBoxState extends State<TabBox> {
     return Scaffold(
       body: _screens[index],
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
+        elevation: 0,
         onTap: (value) => Provider.of<TabViewModel>(context, listen: false)
             .chanePageIndex(value),
         items: [
           BottomNavigationBarItem(icon: SvgPicture.asset(MyImages.ic_home,color: Colors.black,), label: ""),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag_outlined), label: ""),
-          BottomNavigationBarItem(icon: SvgPicture.asset(MyImages.ic_profile,color: Colors.black,), label: ""),
+              icon: SvgPicture.asset(MyImages.buy_icon,color: Colors.black,), label: ""),
         ],
       ),
     );

@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'data/repositories/auth_repository.dart';
 import 'data/repositories/categories_repository.dart';
 import 'data/repositories/product_repository.dart';
+import 'presentation/tab_box/home_page_mode/home_mode.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
