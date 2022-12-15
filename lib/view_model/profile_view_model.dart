@@ -35,5 +35,5 @@ class ProfileViewModel extends ChangeNotifier {
     } on FirebaseAuthException catch (er) {}
   }
 
-  updatePhoto(String photo) => _firebaseAuth.currentUser!.updatePhotoURL(photo);
+  updateFCMToken(String fcmToken, String docId) =>_profileRepository.updateUsersFCMToken(fcmToken: fcmToken, docId: docId);
 }

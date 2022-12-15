@@ -3,7 +3,9 @@ import 'package:edevice/presentation/tab_box/home_page/home_screen.dart';
 import 'package:edevice/presentation/tab_box/home_page_mode/home_mode.dart';
 import 'package:edevice/presentation/tab_box/profile_page/profile_page.dart';
 import 'package:edevice/utils/images.dart';
+import 'package:edevice/view_model/profile_view_model.dart';
 import 'package:edevice/view_model/tab_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,6 +31,8 @@ class _TabBoxState extends State<TabBox> {
 
   _printFirebaseCloudMessagingToken() async {
     String? token = await FirebaseMessaging.instance.getToken();
+    if(!mounted) return;
+    Provider.of<ProfileViewModel>(context,listen: false).updateFCMToken(token??"", FirebaseAuth.instance.currentUser!.uid);
     print("FCM TOKEN : $token");
   }
 

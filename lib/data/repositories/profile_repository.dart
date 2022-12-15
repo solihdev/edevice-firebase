@@ -16,4 +16,14 @@ class ProfileRepository {
       MyUtils.getMyToast(message: er.message.toString());
     }
   }
+
+  Future<void> updateUsersFCMToken({required String fcmToken, required String docId}) async {
+    try {
+      await _firestore.collection("users").doc(docId).update({
+        "fcm_token":fcmToken,
+      });
+    } on FirebaseException catch (er) {
+      MyUtils.getMyToast(message: er.message.toString());
+    }
+  }
 }
