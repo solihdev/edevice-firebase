@@ -4,6 +4,7 @@ import 'package:edevice/presentation/tab_box/home_page_mode/home_mode.dart';
 import 'package:edevice/presentation/tab_box/profile_page/profile_page.dart';
 import 'package:edevice/utils/images.dart';
 import 'package:edevice/view_model/tab_view_model.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,13 @@ class _TabBoxState extends State<TabBox> {
   void initState() {
     _screens.add(const MenuPage());
     _screens.add(const CardPage());
+    _printFirebaseCloudMessagingToken();
     super.initState();
+  }
+
+  _printFirebaseCloudMessagingToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    print("FCM TOKEN : $token");
   }
 
   @override

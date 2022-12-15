@@ -4,6 +4,8 @@ class UserModel {
   String fullName;
   String email;
   String createdAt;
+  String fcmToken;
+  String imageUrl;
 
   UserModel({
     required this.age,
@@ -11,6 +13,8 @@ class UserModel {
     required this.fullName,
     required this.email,
     required this.createdAt,
+    required this.fcmToken,
+    required this.imageUrl,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> josnData) {
@@ -20,6 +24,8 @@ class UserModel {
       fullName: josnData['fullName'] as String? ?? '',
       email: josnData['email'] as String? ?? '',
       createdAt: josnData['createdAt'] as String? ?? '',
+      fcmToken: josnData['fcm_token'] as String? ?? '',
+      imageUrl: josnData['imageUrl'] as String? ?? '',
     );
   }
 
@@ -30,6 +36,8 @@ class UserModel {
       'fullName': fullName,
       'email': email,
       'createdAt': createdAt,
+      'fcm_token': fcmToken,
+      'imageUrl': imageUrl,
     };
   }
 
@@ -41,6 +49,8 @@ class UserModel {
       fullName : $fullName,
       email : $email,
       createdAt : $createdAt,
+      fcmToken:$fcmToken,
+      imageUrl:$imageUrl
       ''';
   }
 }

@@ -1,7 +1,11 @@
+import 'package:edevice/data/models/user_model.dart';
 import 'package:edevice/utils/my_utils.dart';
 import 'package:edevice/utils/style.dart';
 import 'package:edevice/view_model/auth_view_model.dart';
+import 'package:edevice/view_model/profile_view_model.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,21 +18,18 @@ class SignUpPage extends StatefulWidget {
 
   final VoidCallback onClickedSignIn;
 
-
-
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-
   bool isVisibility = true;
   bool isVisibility2 = true;
   final formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
-  TextEditingController();
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           topRight: Radius.circular(18)),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 50,top: 50),
+                      padding: const EdgeInsets.only(left: 50, top: 50),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -107,12 +108,13 @@ class _SignUpPageState extends State<SignUpPage> {
                             child: TextFormField(
                               controller: emailController,
                               textInputAction: TextInputAction.next,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               style: const TextStyle(color: Colors.black),
                               keyboardType: TextInputType.text,
                               obscureText: false,
-                              validator: (email) =>
-                              email != null && !EmailValidator.validate(email)
+                              validator: (email) => email != null &&
+                                      !EmailValidator.validate(email)
                                   ? "Enter a valid email"
                                   : null,
                               decoration: const InputDecoration(
@@ -145,12 +147,13 @@ class _SignUpPageState extends State<SignUpPage> {
                               style: const TextStyle(color: Colors.black),
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               obscureText: isVisibility,
                               validator: (password) =>
-                              password != null && password.length < 6
-                                  ? "Enter at least 6 character !"
-                                  : null,
+                                  password != null && password.length < 6
+                                      ? "Enter at least 6 character !"
+                                      : null,
                               decoration: InputDecoration(
                                 suffixIcon: TextButton(
                                     onPressed: () {
@@ -160,19 +163,19 @@ class _SignUpPageState extends State<SignUpPage> {
                                     },
                                     child: isVisibility
                                         ? Text(
-                                      "Show",
-                                      style:
-                                      MyTextStyle.RalewayBold700.copyWith(
-                                          color: MyColors.C_5956E9),
-                                    )
+                                            "Show",
+                                            style: MyTextStyle.RalewayBold700
+                                                .copyWith(
+                                                    color: MyColors.C_5956E9),
+                                          )
                                         : Text(
-                                      "Hide",
-                                      style:
-                                      MyTextStyle.RalewayBold700.copyWith(
-                                          color: MyColors.C_5956E9),
-                                    )),
+                                            "Hide",
+                                            style: MyTextStyle.RalewayBold700
+                                                .copyWith(
+                                                    color: MyColors.C_5956E9),
+                                          )),
                                 hintStyle:
-                                const TextStyle(color: MyColors.C_868686),
+                                    const TextStyle(color: MyColors.C_868686),
                                 enabledBorder: const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     width: 1,
@@ -188,7 +191,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           Row(
                             children: [
                               SvgPicture.asset(MyImages.password_icon),
-                             const SizedBox(
+                              const SizedBox(
                                 width: 15,
                               ),
                               const Text("Configure password"),
@@ -202,11 +205,12 @@ class _SignUpPageState extends State<SignUpPage> {
                               style: const TextStyle(color: Colors.black),
                               keyboardType: TextInputType.text,
                               obscureText: isVisibility2,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               validator: (password) =>
-                              password != null && password.length < 6
-                                  ? "Enter at least 6 character !"
-                                  : null,
+                                  password != null && password.length < 6
+                                      ? "Enter at least 6 character !"
+                                      : null,
                               decoration: InputDecoration(
                                 suffixIcon: TextButton(
                                     onPressed: () {
@@ -216,19 +220,19 @@ class _SignUpPageState extends State<SignUpPage> {
                                     },
                                     child: isVisibility2
                                         ? Text(
-                                      "Show",
-                                      style:
-                                      MyTextStyle.RalewayBold700.copyWith(
-                                          color: MyColors.C_5956E9),
-                                    )
+                                            "Show",
+                                            style: MyTextStyle.RalewayBold700
+                                                .copyWith(
+                                                    color: MyColors.C_5956E9),
+                                          )
                                         : Text(
-                                      "Hide",
-                                      style:
-                                      MyTextStyle.RalewayBold700.copyWith(
-                                          color: MyColors.C_5956E9),
-                                    )),
+                                            "Hide",
+                                            style: MyTextStyle.RalewayBold700
+                                                .copyWith(
+                                                    color: MyColors.C_5956E9),
+                                          )),
                                 hintStyle:
-                                const TextStyle(color: MyColors.C_868686),
+                                    const TextStyle(color: MyColors.C_868686),
                                 enabledBorder: const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     width: 1,
@@ -243,7 +247,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              if(formKey.currentState!.validate()){
+                              if (formKey.currentState!.validate()) {
                                 signUp();
                                 // Navigator.pushNamed(context, RouteName.main);
                               }
@@ -257,10 +261,10 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               child: Center(
                                   child: Text(
-                                    "Login",
-                                    style: MyTextStyle.RalewayBold700.copyWith(
-                                        fontSize: 20, color: Colors.white),
-                                  )),
+                                "Login",
+                                style: MyTextStyle.RalewayBold700.copyWith(
+                                    fontSize: 20, color: Colors.white),
+                              )),
                             ),
                           ),
                           const SizedBox(
@@ -268,23 +272,27 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           Center(
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 50),
-                                child:  RichText(
-                                    text: TextSpan(
-                                        style: MyTextStyle.sfProRegular.copyWith(
-                                            color: Colors.black, fontSize: 16,fontWeight: FontWeight.w400),
-                                        text: "Already have an account? ",
-                                        children: [
-                                          TextSpan(
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = widget.onClickedSignIn,
-                                            text: "Sign In",
-                                            style: MyTextStyle.sfProBold.copyWith(
-                                                color: Colors.black, fontSize: 16,fontWeight: FontWeight.w700,
-                                            ),
-                                          )
-                                        ])),
-                              ))
+                            padding: const EdgeInsets.only(right: 50),
+                            child: RichText(
+                                text: TextSpan(
+                                    style: MyTextStyle.sfProRegular.copyWith(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
+                                    text: "Already have an account? ",
+                                    children: [
+                                  TextSpan(
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = widget.onClickedSignIn,
+                                    text: "Sign In",
+                                    style: MyTextStyle.sfProBold.copyWith(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  )
+                                ])),
+                          ))
                         ],
                       ),
                     ),
@@ -297,7 +305,8 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-  signUp() {
+
+  signUp() async {
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
 
@@ -305,11 +314,22 @@ class _SignUpPageState extends State<SignUpPage> {
     String password = passwordController.text.trim();
     String confirmPassword = confirmPasswordController.text.trim();
 
-
     if (confirmPassword == password) {
-      Provider.of<AuthViewModel>(context,listen: false).signUp(
-        email: email,
+      await Provider.of<AuthViewModel>(context, listen: false).signUp(
         password: password,
+        email: email,
+      );
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      Provider.of<ProfileViewModel>(context, listen: false).addUser(
+        UserModel(
+          age: 0,
+          userId: FirebaseAuth.instance.currentUser!.uid,
+          fullName: "",
+          email: email,
+          createdAt: DateTime.now().toString(),
+          imageUrl: "",
+          fcmToken: fcmToken ?? "",
+        ),
       );
     } else {
       MyUtils.getMyToast(message: "Passwords don't match!");
