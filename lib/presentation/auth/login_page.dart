@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Text(
@@ -201,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: MyTextStyle.RelawayRegular400.copyWith(
                               color: MyColors.C_5956E9),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 50,
                         ),
                         InkWell(

@@ -1,7 +1,5 @@
 import 'package:edevice/presentation/tab_box/card_page/card_screen.dart';
-import 'package:edevice/presentation/tab_box/home_page/home_screen.dart';
 import 'package:edevice/presentation/tab_box/home_page_mode/home_mode.dart';
-import 'package:edevice/presentation/tab_box/profile_page/profile_page.dart';
 import 'package:edevice/utils/images.dart';
 import 'package:edevice/view_model/profile_view_model.dart';
 import 'package:edevice/view_model/tab_view_model.dart';

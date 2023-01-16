@@ -30,7 +30,7 @@ class SplashPage extends StatelessWidget {
                 child: Image.asset(
                   MyImages.splash_image,
                 )),
-            SizedBox(
+            const SizedBox(
               height: 39,
             ),
             Center(
